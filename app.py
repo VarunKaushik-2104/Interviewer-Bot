@@ -3,7 +3,6 @@ import random
 import requests
 import time
 import threading
-import pyttsx3
 # === Optional TTS (Works Locally, Disabled in Cloud) ===
 try:
     import pyttsx3
