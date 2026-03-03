@@ -4,7 +4,12 @@ import requests
 import time
 import threading
 import pyttsx3
-
+# === Optional TTS (Works Locally, Disabled in Cloud) ===
+try:
+    import pyttsx3
+    tts_enabled = True
+except:
+    tts_enabled = False
 try:
     import speech_recognition as sr
 except ImportError:
@@ -14,8 +19,8 @@ from datetime import datetime
 import base64
 
 # === Configuration ===
-GROQ_API_KEY = " YOUR_GROQ_API_KEY "  # Replace with your actual Groq API key
-
+import os
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # === Animation HTML Constants ===
 BOT_IMAGE_URL = "https://cdn-icons-png.flaticon.com/512/4712/4712042.png"
 
@@ -245,9 +250,10 @@ def speak(text):
 
     st.markdown(f"<p class='interviewer-speech'>🤖 Interviewer: {text}</p>", unsafe_allow_html=True)
 
-    speech_thread = threading.Thread(target=tts_process, args=(text,))
-    speech_thread.start()
-    speech_thread.join()
+    if tts_enabled:
+        speech_thread = threading.Thread(target=tts_process, args=(text,))
+        speech_thread.start()
+        speech_thread.join()
 
     st.session_state.is_speaking = False
 
